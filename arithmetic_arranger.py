@@ -1,10 +1,9 @@
 
 arr = []
 def checkerrors(ar_):
-    try:
-        len(ar_) < 5
-    except:
-        print("Too many problems ")    
+    if len(ar_) > 5:
+        print("too many problems ")
+          
     while(len(ar_) < 5): 
         usr = input("please enter an arithmetic problem: ")
         if usr == "True":
@@ -29,7 +28,8 @@ def checkerrors(ar_):
             print("numbers cannot be more than 4 digits ")
             continue        
         ar_.append(usr)
-    arithmetic_arranger(ar_,True)    
+    if len(ar_) == 5:
+        arithmetic_arranger(ar_,True)    
     return(ar_)
     
 def string_count(str):
@@ -39,40 +39,20 @@ def string_count(str):
     return count    
   
 def arithmetic_arranger(lst,bool):
-    inde = 0
-    c = 0
-    d = 0
-    num_1 = 0
-    num_2 = 0
-    op = 0
-    for i in lst:
-        inde = i.split()
-        if string_count(inde[0]) > string_count(inde[2]):
-            c = string_count(inde[0])
-            d = string_count(inde[2])
-            num_1 = int(inde[0])
-            num_2 = int(inde[2])
-            if inde[1] == "+":
-                ans = num_1 + num_2
-                op = str(ans)
-                op = len(op)
-            else:
-                ans = num_1 - num_2  
-                op = str(ans)
-                op = len(op)
-            print("  ", inde[0],"\n",inde[1]," "*(c-d-1),inde[2],"\n","_"*(c+2),"\n"," "*(c+1-op),ans,"\n")
-        else:
-            num_1 = int(inde[0])
-            num_2 = int(inde[2])
-            c = string_count(inde[2])
-            d = string_count(inde[0])
-            if inde[1] == "+":
-                ans = num_1 + num_2
-                op = str(ans)
-                op = len(op)
-            else:
-                ans = num_1 - num_2
-                op = str(ans)
-                op = len(op)    
-            print(" "*(c-d+2), inde[0],"\n",inde[1],inde[2],"\n","_"*(c+2),"\n"," "*(c+1-op),ans,"\n")         
+    solutions = []
+    for problem in lst:
+        x, op, y = problem.split(' ')
+        z = ""
+        if op == "+":
+            z = str(int(x) + int(y))
+        if op == "-":
+            z = str(int(x) - int(y))
+        width = max(map(len, [x, y, z]))
+        solutions.append([op, x, y, z, width])
+    print("    ".join("  %*s" % (width, x) for (op, x, y, z, width) in solutions))
+    print("    ".join("%s %*s" % (op, width, y) for (op, x, y, z, width) in solutions))
+    print("    ".join("-" * (2 + width) for (op, x, y, z, width) in solutions))
+    if bool:
+        print('    '.join('  %*s' % (width, z) for (op, x, y, z, width) in solutions))
+     
 checkerrors(arr)
